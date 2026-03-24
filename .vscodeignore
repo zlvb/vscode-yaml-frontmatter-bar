@@ -4,4 +4,8 @@ node_modules/**
 tsconfig.json
 esbuild.config.mjs
 .gitignore
+.git/**
 *.map
+*.vsix
+CHANGELOG.md
+.github/**

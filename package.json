@@ -1,23 +1,45 @@
 {
   "name": "yaml-frontmatter-bar",
   "displayName": "YAML Front Matter Bar",
-  "description": "Displays YAML front matter as a styled info bar at the top of Markdown preview",
+  "description": "Displays YAML front matter as a beautiful, styled info bar at the top of Markdown preview — with editor decorations, hover details, and more.",
   "version": "0.1.0",
   "publisher": "cppzhang",
+  "author": {
+    "name": "zlvb",
+    "email": "zlvbvbzl@gmail.com"
+  },
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zlvb/vscode-yaml-frontmatter-bar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zlvb/vscode-yaml-frontmatter-bar/issues"
+  },
+  "homepage": "https://github.com/zlvb/vscode-yaml-frontmatter-bar#readme",
   "engines": {
     "vscode": "^1.60.0"
   },
   "categories": [
     "Other",
-    "Visualization"
+    "Visualization",
+    "Formatters"
   ],
   "keywords": [
     "yaml",
     "frontmatter",
     "front-matter",
     "markdown",
+    "preview",
+    "metadata",
+    "info-bar",
     "mdc"
   ],
+  "galleryBanner": {
+    "color": "#1e3a5f",
+    "theme": "dark"
+  },
   "activationEvents": [
     "onLanguage:markdown"
   ],
