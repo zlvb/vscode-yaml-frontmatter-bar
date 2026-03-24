@@ -1,0 +1,126 @@
+/**
+ * YAML Front Matter Bar — Markdown Preview Styles
+ *
+ * These styles are injected into the VS Code Markdown preview webview
+ * via the "markdown.previewStyles" contribution in package.json.
+ */
+
+.yfm-bar-container {
+    margin: 0 0 16px 0;
+    border: 1px solid var(--vscode-panel-border, rgba(128, 128, 128, 0.35));
+    border-radius: 6px;
+    overflow: hidden;
+    font-family: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+    font-size: 0.9em;
+    background: var(--vscode-textBlockQuote-background, rgba(127, 127, 127, 0.1));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.yfm-bar-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--vscode-titleBar-activeBackground, rgba(60, 60, 120, 0.15));
+    border-bottom: 1px solid var(--vscode-panel-border, rgba(128, 128, 128, 0.2));
+    user-select: none;
+}
+
+.yfm-bar-icon {
+    font-size: 1.1em;
+    flex-shrink: 0;
+}
+
+.yfm-bar-title {
+    font-weight: 600;
+    color: var(--vscode-textLink-foreground, #3794ff);
+    font-size: 0.92em;
+    letter-spacing: 0.02em;
+}
+
+.yfm-bar-count {
+    margin-left: auto;
+    font-size: 0.82em;
+    opacity: 0.6;
+    font-style: italic;
+}
+
+.yfm-bar-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 6px;
+    padding: 8px 12px;
+    line-height: 1.6;
+}
+
+.yfm-field {
+    display: inline-flex;
+    align-items: baseline;
+    background: var(--vscode-badge-background, rgba(60, 60, 100, 0.2));
+    color: var(--vscode-badge-foreground, inherit);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.88em;
+    line-height: 1.5;
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: default;
+    transition: filter 0.15s ease;
+}
+
+.yfm-field:hover {
+    filter: brightness(1.15);
+}
+
+.yfm-key {
+    font-weight: 600;
+    color: var(--vscode-textLink-foreground, #3794ff);
+    margin-right: 1px;
+}
+
+.yfm-sep {
+    opacity: 0.5;
+    margin-right: 4px;
+}
+
+.yfm-val {
+    opacity: 0.85;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Dark theme adjustments (default VS Code dark theme) */
+@media (prefers-color-scheme: dark) {
+    .yfm-bar-container {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    .yfm-bar-header {
+        background: rgba(60, 60, 120, 0.25);
+    }
+    .yfm-field {
+        background: rgba(80, 80, 160, 0.25);
+    }
+}
+
+/* Light theme adjustments */
+@media (prefers-color-scheme: light) {
+    .yfm-bar-container {
+        border-color: rgba(0, 0, 0, 0.12);
+        background: rgba(240, 240, 255, 0.5);
+    }
+    .yfm-bar-header {
+        background: rgba(200, 200, 240, 0.35);
+    }
+    .yfm-field {
+        background: rgba(200, 200, 240, 0.4);
+    }
+    .yfm-key {
+        color: #0451a5;
+    }
+    .yfm-bar-title {
+        color: #0451a5;
+    }
+}

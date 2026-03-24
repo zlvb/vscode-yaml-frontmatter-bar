@@ -1,0 +1,48 @@
+{
+  "name": "yaml-frontmatter-bar",
+  "displayName": "YAML Front Matter Bar",
+  "description": "Displays YAML front matter as a styled info bar at the top of Markdown preview",
+  "version": "0.1.0",
+  "publisher": "cppzhang",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "yaml",
+    "frontmatter",
+    "front-matter",
+    "markdown",
+    "mdc"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "markdown.previewStyles": [
+      "./media/markdown-preview.css"
+    ],
+    "markdown.markdownItPlugins": true
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "node esbuild.config.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "lint": "eslint src --ext ts",
+    "package": "npx @vscode/vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.60.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "yaml": "^2.3.4"
+  }
+}
