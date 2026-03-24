@@ -1,9 +1,9 @@
 {
   "name": "yaml-frontmatter-bar",
   "displayName": "YAML Front Matter Bar",
-  "description": "Displays YAML front matter as a beautiful, styled info bar at the top of Markdown preview — with editor decorations, hover details, and more.",
+  "description": "Displays YAML front matter as a beautiful, styled info bar at the top of Markdown preview.",
   "version": "0.1.0",
-  "publisher": "cppzhang",
+  "publisher": "zhangli",
   "author": {
     "name": "zlvb",
     "email": "zlvbvbzl@gmail.com"
