@@ -64,19 +64,32 @@ function extractFrontMatter(text: string): FMInfo | null {
 
     let currentKey = '';
     let currentArrayItems: string[] = [];
-    let inArray = false;
+    let inBlock = false;      // true when collecting multi-line block (>, |) or array items
+    let blockStyle = '';       // '>' for folded, '|' for literal, '' for array
 
     for (const line of lines) {
         const trimmed = line.trim();
         if (!trimmed || trimmed.charCodeAt(0) === 35 /* # */) { continue; }
 
-        if (inArray && currentKey) {
-            const am = RE_ARRAY_ITEM.exec(line);
-            if (am) { currentArrayItems.push(am[1].trim()); continue; }
-            // Flush
-            fields.push({ key: currentKey, value: currentArrayItems.join(', ') });
+        if (inBlock && currentKey) {
+            // Indented continuation line belongs to current block/array
+            if (line.length > 0 && (line.charCodeAt(0) === 32 || line.charCodeAt(0) === 9)) {
+                const am = RE_ARRAY_ITEM.exec(line);
+                if (am) {
+                    currentArrayItems.push(am[1].trim());
+                } else {
+                    currentArrayItems.push(trimmed);
+                }
+                continue;
+            }
+            // Non-indented line: flush the collected block
+            if (currentArrayItems.length > 0) {
+                const sep = blockStyle === '|' ? '\n' : ' ';
+                fields.push({ key: currentKey, value: currentArrayItems.join(sep) });
+            }
             currentArrayItems = [];
-            inArray = false;
+            inBlock = false;
+            blockStyle = '';
         }
 
         const kv = RE_KV_PAIR.exec(line);
@@ -85,7 +98,8 @@ function extractFrontMatter(text: string): FMInfo | null {
             const raw = kv[2].trim();
 
             if (raw === '' || raw === '|' || raw === '>') {
-                inArray = true;
+                inBlock = true;
+                blockStyle = raw; // '>', '|', or ''
                 currentArrayItems = [];
             } else if (raw.charCodeAt(0) === 91 /* [ */ && raw.charCodeAt(raw.length - 1) === 93 /* ] */) {
                 const items = raw.slice(1, -1).split(',').map(s => unquote(s.trim())).filter(Boolean);
@@ -96,8 +110,9 @@ function extractFrontMatter(text: string): FMInfo | null {
         }
     }
 
-    if (inArray && currentKey && currentArrayItems.length > 0) {
-        fields.push({ key: currentKey, value: currentArrayItems.join(', ') });
+    if (inBlock && currentKey && currentArrayItems.length > 0) {
+        const sep = blockStyle === '|' ? '\n' : ' ';
+        fields.push({ key: currentKey, value: currentArrayItems.join(sep) });
     }
 
     return fields.length > 0 ? { fields } : null;

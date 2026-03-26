@@ -5,6 +5,13 @@ All notable changes to the **YAML Front Matter Bar** extension will be documente
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-03-26
+
+### Fixed
+
+- 🐛 **Multi-line block scalar support** — properly parse YAML `>` (folded) and `|` (literal) block scalars in both Markdown preview and front matter parser
+- 📝 **Description display** — multi-line `description` and other block scalar fields now render their full content instead of appearing empty
+
 ## [0.1.0] - 2026-03-24
 
 ### Added

@@ -73,6 +73,7 @@ function parseSimpleYaml(yaml: string): Record<string, unknown> {
 
     let currentKey = '';
     let currentArray: string[] | null = null;
+    let blockStyle = ''; // '>' for folded, '|' for literal, '' for array
 
     for (const line of lines) {
         // Skip empty lines and comments
@@ -80,26 +81,48 @@ function parseSimpleYaml(yaml: string): Record<string, unknown> {
             continue;
         }
 
-        // Array item (  - value)
-        const arrayMatch = line.match(/^\s+-\s+(.+)$/);
-        if (arrayMatch && currentKey && currentArray) {
-            currentArray.push(unquote(arrayMatch[1].trim()));
-            result[currentKey] = currentArray;
-            continue;
+        // Collecting multi-line block or array items
+        if (currentArray && currentKey) {
+            // Indented continuation line
+            if (line.length > 0 && (line.charCodeAt(0) === 32 || line.charCodeAt(0) === 9)) {
+                const arrayMatch = line.match(/^\s+-\s+(.+)$/);
+                if (arrayMatch) {
+                    currentArray.push(unquote(arrayMatch[1].trim()));
+                } else {
+                    currentArray.push(line.trim());
+                }
+                // For array style, store as array; for block scalar, store joined string
+                if (blockStyle === '') {
+                    result[currentKey] = currentArray;
+                } else {
+                    const sep = blockStyle === '|' ? '\n' : ' ';
+                    result[currentKey] = currentArray.join(sep);
+                }
+                continue;
+            }
+            // Non-indented line: flush and fall through
+            if (currentArray.length > 0) {
+                if (blockStyle === '' || blockStyle === undefined) {
+                    result[currentKey] = currentArray;
+                } else {
+                    const sep = blockStyle === '|' ? '\n' : ' ';
+                    result[currentKey] = currentArray.join(sep);
+                }
+            }
+            currentArray = null;
+            blockStyle = '';
         }
 
         // Key: value pair
         const kvMatch = line.match(/^([a-zA-Z_][\w.-]*)\s*:\s*(.*)$/);
         if (kvMatch) {
-            // Save previous array if any
-            currentArray = null;
-
             currentKey = kvMatch[1];
             const rawValue = kvMatch[2].trim();
 
             if (rawValue === '' || rawValue === '|' || rawValue === '>') {
-                // Could be start of array or multiline
+                // Could be start of array or multiline block
                 currentArray = [];
+                blockStyle = rawValue;
                 result[currentKey] = rawValue || '';
             } else if (rawValue.startsWith('[') && rawValue.endsWith(']')) {
                 // Inline array: [a, b, c]
